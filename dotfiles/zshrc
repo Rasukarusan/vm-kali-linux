@@ -1,0 +1,101 @@
+export ZSH="/home/vagrant/.oh-my-zsh"
+fpath=($HOME/.zsh/anyframe(N-/) $fpath)
+autoload -Uz anyframe-init
+anyframe-init
+ZSH_THEME="avit"
+plugins=(
+  git
+)
+source $ZSH/oh-my-zsh.sh
+# zsh最強の2行
+autoload -U compinit
+compinit
+
+
+export MANPATH="/usr/local/man:$MANPATH"
+export LANG=ja_JP.UTF-8
+# fzfのリストを上から並べ、全画面ではなくvimのquickfixライクにする
+export FZF_DEFAULT_OPTS='--color=fg+:11 --height 70% --reverse --select-1 --exit-0 --multi'
+
+
+alias grepr='grep -r'
+alias ..='cd ..'
+alias ...='cd ../../'
+alias zshrc='vim ~/.zshrc'
+alias szsh='source ~/.zshrc'
+alias vimrc='vim ~/.vimrc'
+alias his='history | fzf'
+# 最終更新日が一番新しいもののファイル名を取得
+alias fin='echo `ls -t | head -n 1`'
+function late() {
+    less $(echo `ls -t | head -n 1`)
+}
+
+# fzf版cdd
+alias cdd='fzf-cdr'
+function fzf-cdr() {
+    target_dir=`cdr -l | sed 's/^[^ ][^ ]*  *//' | fzf`
+    target_dir=`echo ${target_dir/\~/$HOME}`
+    if [ -n "$target_dir" ]; then
+        cd $target_dir
+    fi
+}
+
+# cdrの設定
+autoload -Uz is-at-least
+if is-at-least 4.3.11
+then
+  autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+  add-zsh-hook chpwd chpwd_recent_dirs
+  zstyle ':chpwd:*'      recent-dirs-max 500
+  zstyle ':chpwd:*'      recent-dirs-default yes
+  zstyle ':completion:*' recent-dirs-insert both
+fi
+
+fancy-ctrl-z () {
+  if [[ $#BUFFER -eq 0 ]]; then
+    BUFFER="fg"
+    zle accept-line
+  else
+    zle push-input
+    zle clear-screen
+  fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
+
+# fgをfzfで
+alias fgg='_fgg'
+function _fgg() {
+    wc=$(jobs | wc -l | tr -d ' ')
+    if [ $wc -ne 0 ]; then
+        job=$(jobs | awk -F "suspended" "{print $1 $2}"|sed -e "s/\-//g" -e "s/\+//g" -e "s/\[//g" -e "s/\]//g" | grep -v pwd | fzf | awk "{print $1}")
+        wc_grep=$(echo $job | grep -v grep | grep 'suspended')
+        if [ "$wc_grep" != "" ]; then
+            fg %$job
+        fi
+    fi
+}
+
+# fzfを使ってプロセスKILL
+alias pspk='_pspk'
+function _pspk(){
+    process=(`ps aux | awk '{print $2" "$9" "$11}' | fzf | awk '{print $1}'`)
+    echo $process
+    for item in ${process[@]}
+    do
+        kill $process
+    done
+}
+
+# git logをpreviewで差分を表示する
+alias -g tigg='_gitLogPreviewOpen'
+function _gitLogPreviewOpen() {
+    hashCommit=`git log --oneline | fzf --height 100% --prompt "SELECT COMMIT>" --preview "echo {} | cut -d' ' -f1 | xargs git show --color=always"`
+    if [ -n "$hashCommit" ]; then
+        git show `echo ${hashCommit} | awk '{print $1}'`
+    fi
+}
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
