@@ -4,9 +4,7 @@
 #
 
 expect -c "
-spawn ssh vagrant@vm-kali
-expect \"password\"
-send \"vagrant\n\"
+spawn vagrant ssh 
 expect \"vagrant\"
 send \"sudo su -\n\"
 expect \"root\"
