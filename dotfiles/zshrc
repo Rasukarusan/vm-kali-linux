@@ -1,4 +1,4 @@
-export ZSH="/home/vagrant/.oh-my-zsh"
+export ZSH="/home/$USER/.oh-my-zsh"
 fpath=($HOME/.zsh/anyframe(N-/) $fpath)
 autoload -Uz anyframe-init
 anyframe-init
