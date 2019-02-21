@@ -40,3 +40,9 @@ if [ ! -e ~/.nvm ]; then
     nvm install --lts
 fi
 
+
+# apt-getのリポジトリを追加
+if [ -e /etc/apt/source.list ]; then 
+    sed -i '1s/^/deb http:\/\/http.kali.org\/kali kali-rolling main contrib non-free\n/' /etc/apt/sources.list
+
+fi
