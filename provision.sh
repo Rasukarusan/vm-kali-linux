@@ -5,11 +5,6 @@ set -eu
 MY_HOME='/home/vagrant'
 WORKSPACE_PATH="~/workspace"
 
-# oh-my-zshのインストール
-if [ ! -e ~/.oh-my-zsh ]; then 
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-fi
-
 # zshプラグインのanyframeをインストール
 if [ ! -e ~/.zsh/anyframe ]; then 
     git clone https://github.com/mollifier/anyframe ~/.zsh/anyframe
