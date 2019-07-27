@@ -6,7 +6,7 @@ cd ~/Desktop/vm-kali-linux/shell/
 
 expect -c "
 spawn vagrant ssh 
-expect \"vagrant\"
+expect \"kali\"
 send \"sudo su -\n\"
 expect \"root\"
 interact

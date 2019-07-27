@@ -1,3 +1,4 @@
+#!/bin/sh
 # e: エラー時にそこで実行を止める
 # u: 未定義の変数にアクセスしたらエラーを出す
 set -eu
@@ -46,3 +47,6 @@ if [ -e /etc/apt/source.list ]; then
     sed -i '1s/^/deb http:\/\/http.kali.org\/kali kali-rolling main contrib non-free\n/' /etc/apt/sources.list
 
 fi
+
+# Rictyフォントのインストール
+# apt-get install fontforge

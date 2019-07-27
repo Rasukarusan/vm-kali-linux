@@ -1,5 +1,5 @@
 if &compatible
-  set nocompatible 
+  set nocompatible
 endif
 
 set runtimepath+=/home/vagrant/.vim/dein/repos/github.com/Shougo/dein.vim
@@ -44,7 +44,7 @@ endif
 " シンタックスハイライト
 syntax on
 set t_Co=256
-colorscheme lucario
+colorscheme jellybeans
 " 自動でインデントを挿入
 set autoindent
 " タブをスペースに変換
@@ -155,3 +155,7 @@ nmap <silent> <Esc><Esc> :nohlsearch<CR>
 nnoremap <S-y> <C-v>$y
 " syで単語コピー
 nnoremap sy byw
+" swpファイルを作成しない
+set noswapfile
+" ビープ音をOFFにする
+set belloff=all
